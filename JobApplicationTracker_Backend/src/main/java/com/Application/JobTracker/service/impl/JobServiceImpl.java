@@ -2,6 +2,7 @@ package com.Application.JobTracker.service.impl;
 
 import com.Application.JobTracker.entity.Job;
 import com.Application.JobTracker.entity.JobStatus;
+import com.Application.JobTracker.exception.ResourceNotFoundException;
 import com.Application.JobTracker.repository.JobRepository;
 import com.Application.JobTracker.service.JobService;
 import lombok.Builder;
@@ -33,7 +34,7 @@ public class JobServiceImpl implements JobService {
     }
 
     public Job updateJob(Long job_id, Job job) {
-        Job existing=jobRepository.findById(job_id).orElseThrow(() -> new RuntimeException("job not found"));
+        Job existing=jobRepository.findById(job_id).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
 
         existing.setJobStatus(job.getJobStatus());
         existing.setCompanyName(job.getCompanyName());
