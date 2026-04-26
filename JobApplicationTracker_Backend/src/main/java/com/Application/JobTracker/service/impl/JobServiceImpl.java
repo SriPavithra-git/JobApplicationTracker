@@ -5,8 +5,10 @@ import com.Application.JobTracker.entity.JobStatus;
 import com.Application.JobTracker.exception.ResourceNotFoundException;
 import com.Application.JobTracker.repository.JobRepository;
 import com.Application.JobTracker.service.JobService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,8 @@ public class JobServiceImpl implements JobService {
     public List<Job> getAllJobs() {
         return jobRepository.findAll();
     }
+
+
 
     public Job updateJob(Long job_id, Job job) {
         Job existing=jobRepository.findById(job_id).orElseThrow(() -> new ResourceNotFoundException("Job not found"));

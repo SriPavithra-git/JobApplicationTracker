@@ -4,7 +4,9 @@ import com.Application.JobTracker.dto.ApiResponse;
 import com.Application.JobTracker.entity.Job;
 import com.Application.JobTracker.entity.JobStatus;
 import com.Application.JobTracker.service.JobService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +26,11 @@ public class JobController {
                 .data(new_job)
                 .build();
 
+    }
+
+    @GetMapping("/csrf-token")
+    public CsrfToken getcsrfToken(HttpServletRequest request){
+        return (CsrfToken) request.getAttribute("_csrf");
     }
 
     @GetMapping("/alljobs")
