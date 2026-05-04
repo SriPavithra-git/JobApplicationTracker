@@ -1,11 +1,15 @@
 package com.Application.JobTracker.controller;
 
 import com.Application.JobTracker.dto.ApiResponse;
+import com.Application.JobTracker.dto.JobRequestDTO;
+import com.Application.JobTracker.dto.JobResponseDTO;
 import com.Application.JobTracker.entity.Job;
 import com.Application.JobTracker.entity.JobStatus;
+import com.Application.JobTracker.entity.UserPrincipal;
 import com.Application.JobTracker.service.JobService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +22,9 @@ public class JobController {
     private final JobService jobService;
 
     @PostMapping("/create")
-    public ApiResponse<Job> createJob(@RequestBody Job job){
-        Job new_job=jobService.CreateJob(job);
-        return ApiResponse.<Job>builder()
-                .Success(true)
-                .message("job application successfully added")
-                .data(new_job)
-                .build();
+    public JobResponseDTO createJob(@RequestBody JobRequestDTO jobRequestDTO,   @AuthenticationPrincipal UserPrincipal principal){
+
+        return jobService.CreateJob(jobRequestDTO,principal);
 
     }
 

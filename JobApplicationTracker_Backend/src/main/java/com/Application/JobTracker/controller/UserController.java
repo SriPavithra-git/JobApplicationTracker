@@ -1,6 +1,7 @@
 package com.Application.JobTracker.controller;
 
 import com.Application.JobTracker.dto.ApiResponse;
+import com.Application.JobTracker.dto.UserRequestDTO;
 import com.Application.JobTracker.entity.User;
 import com.Application.JobTracker.service.UserService;
 import com.Application.JobTracker.service.impl.JwtService;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(@RequestBody User user){
+    public String login(@RequestBody UserRequestDTO user){
         Authentication authentication =authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword()));
         if(authentication.isAuthenticated()){
            return jwtService.generateToken(user.getEmail());

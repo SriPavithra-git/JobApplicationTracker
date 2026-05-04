@@ -1,5 +1,6 @@
 package com.Application.JobTracker.entity;
 
+import lombok.Data;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@Data
 public class UserPrincipal implements UserDetails {
     User user;
     public UserPrincipal(User user){
