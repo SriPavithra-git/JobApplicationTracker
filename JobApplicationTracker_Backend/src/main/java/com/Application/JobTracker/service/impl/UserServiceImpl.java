@@ -1,5 +1,6 @@
 package com.Application.JobTracker.service.impl;
 
+import com.Application.JobTracker.dto.UserRequestDTO;
 import com.Application.JobTracker.entity.User;
 import com.Application.JobTracker.repository.UserRepository;
 import com.Application.JobTracker.service.UserService;
@@ -13,10 +14,14 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    public User registerUser(User user) {
+    public User registerUser(UserRequestDTO user) {
         BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
-        user.setPassword(encoder.encode(user.getPassword()));
-       return userRepository.save(user);
+        User userMain=new User();
+        userMain.setPassword(encoder.encode(user.getPassword()));
+        userMain.setUsername(user.getUsername());
+        userMain.setEmail(user.getEmail());
+
+       return userRepository.save(userMain);
     }
 
 }

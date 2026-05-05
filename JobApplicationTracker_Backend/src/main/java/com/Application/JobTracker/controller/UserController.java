@@ -20,7 +20,7 @@ public class UserController {
     private final JwtService jwtService;
 
     @PostMapping("/register")
-    public ApiResponse<User> registerUser(@RequestBody User user){
+    public ApiResponse<User> registerUser(@RequestBody UserRequestDTO user){
         return ApiResponse.<User>builder()
                 .Success(true)
                 .message("user successfully registered")
