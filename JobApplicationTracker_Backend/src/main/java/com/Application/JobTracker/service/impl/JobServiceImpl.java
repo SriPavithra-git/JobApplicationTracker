@@ -25,14 +25,20 @@ public class JobServiceImpl implements JobService {
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
 
+    private User getUser(UserPrincipal userPrincipal){
+        return  userRepository.findByEmail(userPrincipal.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
     public JobResponseDTO CreateJob(JobRequestDTO jobRequestDTO, UserPrincipal principal) {
-        User user=userRepository.findByEmail(principal.getUsername()).get();
+        User user=getUser(principal);
         Job newJob= Job.builder()
                 .role(jobRequestDTO.getRole())
                 .jobStatus(jobRequestDTO.getJobStatus())
                 .appliedDate(jobRequestDTO.getAppliedDate())
                 .interviewDate(jobRequestDTO.getInterviewDate())
                 .notes(jobRequestDTO.getNotes())
+                .companyName(jobRequestDTO.getCompanyName())
                 .user(user)
                 .build();
 
@@ -49,34 +55,44 @@ public class JobServiceImpl implements JobService {
         return jobResponseDTO;
     }
 
-    public List<Job> getAllJobs() {
-        return jobRepository.findAll();
+    public List<Job> getAllJobs(UserPrincipal userPrincipal) {
+
+        return jobRepository.findByUser(getUser(userPrincipal));
     }
 
 
 
-    public Job updateJob(Long job_id, Job job) {
+    public Job updateJob(Long job_id, JobRequestDTO jobRequestDTO, UserPrincipal userPrincipal) {
+        User user=getUser(userPrincipal);
         Job existing=jobRepository.findById(job_id).orElseThrow(() -> new ResourceNotFoundException("Job not found"));
-
-        existing.setJobStatus(job.getJobStatus());
-        existing.setCompanyName(job.getCompanyName());
-        existing.setNotes(job.getNotes());
-        existing.setRole(job.getRole());
-        existing.setAppliedDate(job.getAppliedDate());
-        existing.setInterviewDate(job.getInterviewDate());
+        if(!existing.getUser().getUser_id().equals(user.getUser_id())){
+            throw new RuntimeException("Unauthorized");
+        }
+        existing.setJobStatus(jobRequestDTO.getJobStatus());
+        existing.setCompanyName(jobRequestDTO.getCompanyName());
+        existing.setNotes(jobRequestDTO.getNotes());
+        existing.setRole(jobRequestDTO.getRole());
+        existing.setAppliedDate(jobRequestDTO.getAppliedDate());
+        existing.setInterviewDate(jobRequestDTO.getInterviewDate());
 
         return jobRepository.save(existing) ;
     }
 
-    public void deleteJob(Long job_id) {
-         jobRepository.deleteById(job_id);
+    public void deleteJob(Long job_id, UserPrincipal userPrincipal) {
+        User user=getUser(userPrincipal);
+        Job existing=jobRepository.findById(job_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
+        if(!existing.getUser().getUser_id().equals(user.getUser_id())){
+            throw new RuntimeException("Unauthorized");
+        }
+        jobRepository.deleteById(job_id);
     }
 
-    public List<Job> searchJobs(String keywords) {
-        return jobRepository.findByCompanyNameContainingIgnoreCase(keywords);
+    public List<Job> searchJobs(String keywords, UserPrincipal userPrincipal) {
+        return jobRepository.findByUserAndCompanyNameContainingIgnoreCase(getUser(userPrincipal), keywords);
     }
 
-    public List<Job> SearchByJobStatus(JobStatus status) {
-        return jobRepository.findByJobStatus(status);
+    public List<Job> SearchByJobStatus(JobStatus status, UserPrincipal userPrincipal) {
+        return jobRepository.findByUserAndJobStatus(getUser(userPrincipal),status);
     }
 }

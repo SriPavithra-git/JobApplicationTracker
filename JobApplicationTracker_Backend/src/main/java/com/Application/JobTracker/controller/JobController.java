@@ -8,8 +8,10 @@ import com.Application.JobTracker.entity.JobStatus;
 import com.Application.JobTracker.entity.UserPrincipal;
 import com.Application.JobTracker.service.JobService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +24,7 @@ public class JobController {
     private final JobService jobService;
 
     @PostMapping("/create")
-    public JobResponseDTO createJob(@RequestBody JobRequestDTO jobRequestDTO,   @AuthenticationPrincipal UserPrincipal principal){
+    public JobResponseDTO createJob(@Valid @RequestBody JobRequestDTO jobRequestDTO, @AuthenticationPrincipal UserPrincipal principal){
 
         return jobService.CreateJob(jobRequestDTO,principal);
 
@@ -34,27 +36,27 @@ public class JobController {
     }
 
     @GetMapping("/alljobs")
-    public ApiResponse<List<Job>>  allJobs(){
+    public ApiResponse<List<Job>>  allJobs(@AuthenticationPrincipal UserPrincipal principal){
         return ApiResponse.<List<Job>>builder()
                 .Success(true)
                 .message("these are all the jobs")
-                .data(jobService.getAllJobs())
+                .data(jobService.getAllJobs(principal))
                 .build();
     }
 
     @PutMapping("/update/{id}")
-    public ApiResponse<Job> updateJob(@PathVariable Long id, @RequestBody Job job){
+    public ApiResponse<Job> updateJob(@PathVariable Long id, @Valid @RequestBody JobRequestDTO jobRequestDTO, @AuthenticationPrincipal UserPrincipal principal){
 
         return ApiResponse.<Job>builder()
                 .Success(true)
                 .message("updated successfully")
-                .data(jobService.updateJob(id,job))
+                .data(jobService.updateJob(id,jobRequestDTO,principal))
                 .build();
     }
 
     @DeleteMapping("/delete/{id}")
-    public ApiResponse<Job> deleteJob(@PathVariable Long id){
-        jobService.deleteJob(id);
+    public ApiResponse<Job> deleteJob(@PathVariable Long id, @AuthenticationPrincipal UserPrincipal principal){
+        jobService.deleteJob(id, principal);
         return ApiResponse.<Job>builder()
                 .Success(true)
                 .message("deleted successfully")
@@ -63,20 +65,20 @@ public class JobController {
     }
 
     @GetMapping("/search")
-    public ApiResponse<List<Job>> searchByCompanyName(@RequestParam String keyword){
+    public ApiResponse<List<Job>> searchByCompanyName(@RequestParam String keyword, @AuthenticationPrincipal UserPrincipal principal){
         return ApiResponse.<List<Job>>builder()
                 .Success(true)
                 .message("successfully retrieved")
-                .data(jobService.searchJobs(keyword))
+                .data(jobService.searchJobs(keyword,principal))
                 .build();
     }
 
     @GetMapping("/status/{status}")
-    public ApiResponse<List<Job>> searchByStatus(@PathVariable JobStatus status){
+    public ApiResponse<List<Job>> searchByStatus(@PathVariable JobStatus status, @AuthenticationPrincipal UserPrincipal principal){
         return ApiResponse.<List<Job>>builder()
                 .Success(true)
                 .message("successfully retrieved")
-                .data(jobService.SearchByJobStatus(status))
+                .data(jobService.SearchByJobStatus(status, principal))
                 .build();
     }
 

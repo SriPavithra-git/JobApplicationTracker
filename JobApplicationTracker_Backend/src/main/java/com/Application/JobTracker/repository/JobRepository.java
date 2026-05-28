@@ -2,6 +2,7 @@ package com.Application.JobTracker.repository;
 
 import com.Application.JobTracker.entity.Job;
 import com.Application.JobTracker.entity.JobStatus;
+import com.Application.JobTracker.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, Long> {
-    List<Job> findByJobStatus(JobStatus jobStatus);
-    List<Job> findByCompanyNameContainingIgnoreCase(String companyName);
+    List<Job> findByUser(User user);
+    List<Job> findByUserAndJobStatus(User user, JobStatus status);
+    List<Job> findByUserAndCompanyNameContainingIgnoreCase(User user, String keyword);
 
 }

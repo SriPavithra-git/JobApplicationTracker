@@ -5,6 +5,7 @@ import com.Application.JobTracker.dto.UserRequestDTO;
 import com.Application.JobTracker.entity.User;
 import com.Application.JobTracker.service.UserService;
 import com.Application.JobTracker.service.impl.JwtService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +21,7 @@ public class UserController {
     private final JwtService jwtService;
 
     @PostMapping("/register")
-    public ApiResponse<User> registerUser(@RequestBody UserRequestDTO user){
+    public ApiResponse<User> registerUser(@Valid @RequestBody UserRequestDTO user){
         return ApiResponse.<User>builder()
                 .Success(true)
                 .message("user successfully registered")
@@ -28,7 +29,7 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public String login(@RequestBody UserRequestDTO user){
         Authentication authentication =authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword()));
         if(authentication.isAuthenticated()){

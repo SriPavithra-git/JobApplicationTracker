@@ -13,15 +13,15 @@ import java.util.List;
 public interface JobService {
     JobResponseDTO CreateJob(JobRequestDTO job, UserPrincipal userPrincipal);
 
-    List<Job> getAllJobs();
+    List<Job> getAllJobs(UserPrincipal userPrincipal);
 
-    Job updateJob(Long job_id, Job job);
+    Job updateJob(Long job_id, JobRequestDTO jobRequestDTO, UserPrincipal userPrincipal);
 
-    void deleteJob(Long job_id);
+    void deleteJob(Long job_id, UserPrincipal userPrincipal);
 
-    List<Job> searchJobs(String keywords);
+    List<Job> searchJobs(String keywords, UserPrincipal principal);
 
-    List<Job> SearchByJobStatus(JobStatus status);
+    List<Job> SearchByJobStatus(JobStatus status, UserPrincipal userPrincipal);
 }
 
 
