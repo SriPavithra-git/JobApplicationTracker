@@ -46,7 +46,7 @@ const Register= () =>{
             <input
               type="email"
               {...register('email', { required: 'Email is required' })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-field"
               placeholder="you@example.com"
             />
             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
@@ -60,7 +60,7 @@ const Register= () =>{
                 required: 'Password is required',
                 minLength: { value: 6, message: 'Minimum 6 characters' }
               })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-field"
               placeholder="••••••••"
             />
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}

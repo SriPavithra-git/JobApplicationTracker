@@ -3,7 +3,8 @@ import { AuthProvider } from './context/AuthContext'
 import React from 'react'
 import ProtectedRoute from './components/ProtectedRoute'
 import Register from './components/Register'
-
+import Login from './components/Login'
+import Dashboard from './components/Dashboard'
 const App = () => {
   return (
     <AuthProvider>
