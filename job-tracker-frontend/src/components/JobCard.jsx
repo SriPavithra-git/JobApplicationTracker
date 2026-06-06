@@ -35,10 +35,10 @@ const JobCard=({job, onEdit, onDelete}) =>{
             </p>
         )}
         <div className="flex gap-2 pt-1">
-            <button onClick={onEdit} className="flex-1 text-xs font-medium text-blue-600 border border-blue-200 rounded-lg py-1.5 hover:bg-blue-50 transition">
+            <button type="button" onClick={() => onEdit(job)} className="flex-1 text-xs font-medium text-blue-600 border border-blue-200 rounded-lg py-1.5 hover:bg-blue-50 transition">
                 Edit
             </button>
-            <button onClick={onDelete} className="flex-1 text-xs font-medium text-red-600 border border-red-200 rounded-lg py-1.5 hover:bg-red-50 transition">
+            <button type="button" onClick={() => onDelete(job)} className="flex-1 text-xs font-medium text-red-600 border border-red-200 rounded-lg py-1.5 hover:bg-red-50 transition">
                 Delete
             </button>
         </div>
