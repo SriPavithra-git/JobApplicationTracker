@@ -6,7 +6,7 @@ const STATUS_CONFIG={
   REJECTED:  { label: 'Rejected',  color: 'bg-red-100 text-red-700' },
 }
 
-const StatusBar = ({jobs}) =>{
+const StatsBar = ({jobs}) =>{
     const counts= {
     TOTAL:     jobs.length,
     APPLIED:   jobs.filter(j => j.jobStatus === 'APPLIED').length,

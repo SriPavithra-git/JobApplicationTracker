@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 
+const STATUSES = ['APPLIED', 'INTERVIEW', 'OFFER', 'REJECTED']
+
 const JobModal= ({isOpen, onClose, onSubmit, editingJob}) =>{
-    const{register, handleSubmit, reset, formState:{errors}}= useAuth();
+    const{register, handleSubmit, reset, formState:{errors}}= useForm();
 
     useEffect(() =>{
         if(editingJob){

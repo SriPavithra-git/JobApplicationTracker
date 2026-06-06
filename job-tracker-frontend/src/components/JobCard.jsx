@@ -7,7 +7,7 @@ const STATS={
 
 const JobCard=({job, onEdit, onDelete}) =>{
     return(
-        <div className="bg-white rounded-xl shadow-sm border border-gray-300 flex flex-col gap-3 hover:shadow-md transition">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-300 flex flex-col gap-3 hover:shadow-md transition h-full p-4">
         <div className="flex items-start justify-between">
             <div>
                 <h3 className="font-semibold text-gray-900 text-base">{job.companyName}</h3>
